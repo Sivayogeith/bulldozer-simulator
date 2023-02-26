@@ -10,4 +10,4 @@ Thanks to my great father for teaching how to code
 
 Thanks to my fantastic mother for showing what is good and what is not
 
-And, Finally thanks to my beloved sister who test my game and gave her feedback
+And, Finally thanks to my beloved sister who tested my game and gave her feedback
