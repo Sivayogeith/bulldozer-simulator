@@ -1,0 +1,19 @@
+#bulldozer {
+  background-color: #b7d6ed;
+}
+.main {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-top: 30px;
+}
+.gameover-btn {
+  position: absolute;
+}
+.gameover-p {
+  color: #333;
+  position: absolute;
+}
+.hide {
+  display: none;
+}
