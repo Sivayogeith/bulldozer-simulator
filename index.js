@@ -47,7 +47,7 @@ let init = () => {
   let playerSpeed = 0;
   let cars = [];
   let score = 0;
-  let hearts = 1;
+  let hearts = 5;
 
   // Get the canvas and context
   const canvas = document.getElementById("bulldozer");
