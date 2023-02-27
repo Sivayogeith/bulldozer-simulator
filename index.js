@@ -7,15 +7,6 @@ const MAX_SPEED = 10;
 const CAR_SPACING = 200;
 const CAR_COLORS = ["#FD8A8A", "#F7C8E0", "#95a832", "#B4E4FF", "#95BDFF"];
 
-// Game state
-let playerX = CANVAS_WIDTH / 2 - CAR_WIDTH / 2;
-let playerY = CANVAS_HEIGHT - CAR_HEIGHT - 10;
-let playerSpeed = 0;
-let playerYSpeed = 0;
-let cars = [];
-let score = 0;
-let hearts = 5;
-
 // Draw a car at the specified location and color
 let drawCar = (ctx, x, y, color) => {
   ctx.fillStyle = color;
@@ -50,6 +41,14 @@ if (!localStorage.getItem("highScore")) {
 }
 setHighScore(parseInt(localStorage.getItem("highScore")));
 let init = () => {
+  // Game state
+  let playerX = CANVAS_WIDTH / 2 - CAR_WIDTH / 2;
+  let playerY = CANVAS_HEIGHT - CAR_HEIGHT - 10;
+  let playerSpeed = 0;
+  let cars = [];
+  let score = 0;
+  let hearts = 1;
+
   // Get the canvas and context
   const canvas = document.getElementById("bulldozer");
   const ctx = canvas.getContext("2d");
@@ -64,10 +63,6 @@ let init = () => {
     // Move the player car
     playerX += playerSpeed;
     playerX = Math.max(0, Math.min(playerX, CANVAS_WIDTH - CAR_WIDTH));
-
-    // Move the player car
-    playerY += playerYSpeed;
-    playerY = Math.max(0, Math.min(playerY, CANVAS_HEIGHT - CAR_HEIGHT));
 
     // Draw the player car
     drawCar(ctx, playerX, playerY, "#FFFBAC");
@@ -132,8 +127,6 @@ let init = () => {
       resetBtn.style.top = `${CANVAS_HEIGHT / 2 + 60}px`;
       resetBtn.addEventListener("click", () => {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        hearts = 5;
-        score = 0;
         resetBtn.classList.add("hide");
         h1.classList.add("hide");
         init();

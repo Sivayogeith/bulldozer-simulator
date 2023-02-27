@@ -1,7 +1,16 @@
-let player2X = CANVAS_WIDTH / 2 - CAR_WIDTH / 2 + 100;
-let player2Y = CANVAS_HEIGHT - CAR_HEIGHT - 10;
-let player2Speed = 0;
 let multi = () => {
+  // Game state
+  let playerX = CANVAS_WIDTH / 2 - CAR_WIDTH / 2;
+  let playerY = CANVAS_HEIGHT - CAR_HEIGHT - 10;
+  let playerSpeed = 0;
+  let cars = [];
+  let score = 0;
+  let hearts = 5;
+
+  //  Multi-Player Game State
+  let player2X = CANVAS_WIDTH / 2 - CAR_WIDTH / 2 + 100;
+  let player2Y = CANVAS_HEIGHT - CAR_HEIGHT - 10;
+  let player2Speed = 0;
   // Get the canvas and context
   const canvas = document.getElementById("bulldozer");
   const ctx = canvas.getContext("2d");
@@ -86,11 +95,9 @@ let multi = () => {
       resetBtn.style.top = `${CANVAS_HEIGHT / 2 + 60}px`;
       resetBtn.addEventListener("click", () => {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        hearts = 5;
-        score = 0;
         resetBtn.classList.add("hide");
         h1.classList.add("hide");
-        init();
+        multi();
       });
       document.body.appendChild(resetBtn);
       document.body.appendChild(h1);
@@ -137,6 +144,6 @@ document.querySelector(".play-multi").addEventListener("click", (event) => {
   event.target.classList.add("hide");
   document.querySelector(".play").classList.add("hide");
   document.querySelector("#bulldozer").classList.remove("hide");
-  hearts = 10;
+  hearts = 6;
   multi();
 });
