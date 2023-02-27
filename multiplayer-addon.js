@@ -1,55 +1,7 @@
-// Game settings
-const CANVAS_WIDTH = 900;
-const CANVAS_HEIGHT = 600;
-const CAR_WIDTH = 50;
-const CAR_HEIGHT = 100;
-const MAX_SPEED = 10;
-const CAR_SPACING = 200;
-const CAR_COLORS = ["#FD8A8A", "#F7C8E0", "#95a832", "#B4E4FF", "#95BDFF"];
-
-// Game state
-let playerX = CANVAS_WIDTH / 2 - CAR_WIDTH / 2;
-let playerY = CANVAS_HEIGHT - CAR_HEIGHT - 10;
-let playerSpeed = 0;
-let playerYSpeed = 0;
-let cars = [];
-let score = 0;
-let hearts = 5;
-
-// Draw a car at the specified location and color
-let drawCar = (ctx, x, y, color) => {
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, CAR_WIDTH, CAR_HEIGHT);
-};
-
-// Check for collision between two cars
-let checkCollision = (x1, y1, x2, y2) => {
-  return (
-    x1 < x2 + CAR_WIDTH &&
-    x1 + CAR_WIDTH > x2 &&
-    y1 < y2 + CAR_HEIGHT &&
-    y1 + CAR_HEIGHT > y2
-  );
-};
-
-let drawText = (ctx, text, x, y, font, color, textAlign = "left") => {
-  ctx.fillStyle = color;
-  ctx.font = font;
-  ctx.textAlign = textAlign;
-  ctx.fillText(text, x, y);
-};
-
-let setHighScore = (score) => {
-  localStorage.setItem("highScore", score);
-  let high = document.querySelector(".highScore");
-  high.innerHTML = `Highest Score: ${score}`;
-};
-
-if (!localStorage.getItem("highScore")) {
-  localStorage.setItem("highScore", 0);
-}
-setHighScore(parseInt(localStorage.getItem("highScore")));
-let init = () => {
+let player2X = CANVAS_WIDTH / 2 - CAR_WIDTH / 2 + 100;
+let player2Y = CANVAS_HEIGHT - CAR_HEIGHT - 10;
+let player2Speed = 0;
+let multi = () => {
   // Get the canvas and context
   const canvas = document.getElementById("bulldozer");
   const ctx = canvas.getContext("2d");
@@ -64,13 +16,12 @@ let init = () => {
     // Move the player car
     playerX += playerSpeed;
     playerX = Math.max(0, Math.min(playerX, CANVAS_WIDTH - CAR_WIDTH));
-
     // Move the player car
-    playerY += playerYSpeed;
-    playerY = Math.max(0, Math.min(playerY, CANVAS_HEIGHT - CAR_HEIGHT));
-
+    player2X += player2Speed;
+    player2X = Math.max(0, Math.min(player2X, CANVAS_WIDTH - CAR_WIDTH));
     // Draw the player car
     drawCar(ctx, playerX, playerY, "#FFFBAC");
+    drawCar(ctx, player2X, player2Y, "#ed4545");
 
     // Generate new cars as needed
     while (cars.length < 2) {
@@ -89,7 +40,10 @@ let init = () => {
       car.y += car.speed;
 
       // Check for collision with player car
-      if (checkCollision(playerX, playerY, car.x, car.y)) {
+      if (
+        checkCollision(playerX, playerY, car.x, car.y) ||
+        checkCollision(player2X, player2Y, car.x, car.y)
+      ) {
         // Player hit a car
         cars.splice(i, 1);
         i--;
@@ -144,36 +98,45 @@ let init = () => {
   }, 30);
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "a" || event.key === "ArrowLeft") {
+    if (event.key === "a") {
       playerSpeed = -10;
-    } else if (event.key === "d" || event.key === "ArrowRight") {
+    } else if (event.key === "d") {
       playerSpeed = 10;
-    } else if (event.key === "w" || event.key === "ArrowUp") {
+    } else if (event.key === "w") {
       playerY -= 10;
       playerY = Math.max(0, playerY);
-    } else if (event.key === "s" || event.key === "ArrowDown") {
+    } else if (event.key === "s") {
       playerY += 10;
       playerY = Math.min(playerY, CANVAS_HEIGHT - CAR_HEIGHT);
+    } else if (event.key === "ArrowLeft") {
+      player2Speed = -10;
+    } else if (event.key === "ArrowRight") {
+      player2Speed = 10;
+    } else if (event.key === "ArrowUp") {
+      player2Y -= 10;
+      player2Y = Math.max(0, player2Y);
+    } else if (event.key === "ArrowDown") {
+      player2Y += 10;
+      player2Y = Math.min(player2Y, CANVAS_HEIGHT - CAR_HEIGHT);
     }
     event.preventDefault();
   });
 
   document.addEventListener("keyup", (event) => {
-    if (
-      event.key === "a" ||
-      event.key === "d" ||
-      event.key === "ArrowRight" ||
-      event.key === "ArrowLeft"
-    ) {
+    if (event.key === "a" || event.key === "d") {
       playerSpeed = 0;
+    }
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+      player2Speed = 0;
     }
   });
 };
 
 // Initialize the game
-document.querySelector(".play").addEventListener("click", (event) => {
+document.querySelector(".play-multi").addEventListener("click", (event) => {
   event.target.classList.add("hide");
-  document.querySelector(".play-multi").classList.add("hide");
+  document.querySelector(".play").classList.add("hide");
   document.querySelector("#bulldozer").classList.remove("hide");
-  init();
+  hearts = 10;
+  multi();
 });
